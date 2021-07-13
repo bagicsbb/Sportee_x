@@ -16,13 +16,21 @@ class SPTeamsVC: SPDataLoadingVC {
     var teams: [Team] = []
     var players: [Player] = []
     var selectedTeam: Team!
+    var images: [UIImage] = []
+    var teamIDs: [String] = []
+    var stadiumIds: [String] = []
+    var teamShortNamesArray: [String] = []
+    var allTeam: [Team] = []
+    var stadiumImages: [UIImage] = []
+    var playerDownloadedImages: [UIImage] = []
+    var playersIDsArray: [String] = []
+    var playersTeamIdArray: [String] = []
     
     var isSelectedOnce = false
    
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.tabBar.isHidden = false
-        print(leagueID)
         navigationController?.navigationBar.isHidden = true
         tabBarController?.tabBar.isUserInteractionEnabled = false
         configureCollectionView()
@@ -60,7 +68,7 @@ class SPTeamsVC: SPDataLoadingVC {
             case .success(let team):
                 self.teams = team.teams
                 self.updateData(on: self.teams)
-                allTeam = self.teams
+                self.allTeam = self.teams
                 self.downloadTeamBadgeImages(team: team.teams)
                 self.downloadStadiumImages(team: team.teams)
                 
@@ -79,7 +87,7 @@ class SPTeamsVC: SPDataLoadingVC {
             case .success(let player):
                 self.players = player.player
                 
-                if playersTeamIdArray.contains(self.teams[index].idTeam) {
+                if self.playersTeamIdArray.contains(self.teams[index].idTeam) {
                     DispatchQueue.main.async {
                         
                         let destVC2 = SPTeamLast5EventsVC()
@@ -126,9 +134,9 @@ class SPTeamsVC: SPDataLoadingVC {
                 
                 NetworkManager.shared.downloadImage(from: team[index].strTeamBadge) {  image in
                     guard let image = image else {return}
-                        teamIDs.append(team[index].idTeam)
-                    teamShortNamesArray.append(team[index].strTeamShort ?? "")
-                        images.append(image)
+                    self.teamIDs.append(team[index].idTeam)
+                    self.teamShortNamesArray.append(team[index].strTeamShort ?? "")
+                    self.images.append(image)
                     self.createTeamIDImageDic()
                     
                 }
@@ -141,8 +149,8 @@ class SPTeamsVC: SPDataLoadingVC {
                 
                 NetworkManager.shared.downloadImage(from: team[index].strStadiumThumb) {  image in
                     guard let image = image else {return}
-                    stadiumIds.append(team[index].idTeam)
-                    stadiumImages.append(image)
+                    self.stadiumIds.append(team[index].idTeam)
+                    self.stadiumImages.append(image)
                     self.createTeamIDStadiumDic()
                     if index == team.count - 1 {
                         self.dismissLoadingView()
@@ -161,9 +169,9 @@ class SPTeamsVC: SPDataLoadingVC {
             for index in 0...players.count - 1 {
                 NetworkManager.shared.downloadImage(from: (players[index].strCutout ?? players[index].strThumb) ?? "") {  image in
                     guard let image = image else {return}
-                    playerDownloadedImages.append(image)
-                    playersIDsArray.append(player[index].idPlayer ?? "")
-                    playersTeamIdArray.append(player[index].idTeam ?? "")
+                    self.playerDownloadedImages.append(image)
+                    self.playersIDsArray.append(player[index].idPlayer ?? "")
+                    self.playersTeamIdArray.append(player[index].idTeam ?? "")
 
                     if index == self.players.count - 1 {
                         self.dismissLoadingView()

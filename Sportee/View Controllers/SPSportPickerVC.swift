@@ -14,6 +14,7 @@ class SPSportPickerVC: UIViewController {
     let sportImage = UIImageView()
     let infoLabel = SPBodyLabel(textAlignment: .center)
     let moreSportLabel = SPBodyLabel(textAlignment: .center)
+    var leagueID: String = ""
     
     
     override func viewDidLoad() {
@@ -33,7 +34,7 @@ class SPSportPickerVC: UIViewController {
     
     @objc func goToNBA(sender: UIButton) {
         sender.showAnimation {
-            leagueID = LeagueID.nba
+            self.leagueID = LeagueID.nba
             self.tabBarController?.selectedIndex = 1
         }
     }

@@ -30,7 +30,6 @@ class SPPlayerListVC: SPDataLoadingVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("...-----...\(playerDownloadedImages.count)")
         getPlayersFromTeams()
         configure()
     }

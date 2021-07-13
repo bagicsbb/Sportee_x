@@ -18,7 +18,6 @@ enum ScreenSize {
 enum LeagueID {
     
     static let nba: String = "4387"
-    static let premierLeague: String = "4328"
 
 }
 
